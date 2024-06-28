@@ -1,63 +1,50 @@
 import React, { useState } from 'react';
 import api from '../services/Api_services';
-import { Line } from 'react-chartjs-2';
 
-const Graphique = () => {
-    const [graphData, setGraphData] = useState(null);
-    const [filters, setFilters] = useState({
-        startDate: '',
-        endDate: '',
-        specialty: '',
-        graphType: 'line'
-    });
+const ChartGenerator = () => {
+    const [chartType, setChartType] = useState('pie');
+    const [filters, setFilters] = useState({ date_debut: '', date_fin: '' });
+    const [chart, setChart] = useState(null);
+    const [error, setError] = useState('');
 
-    const generateGraph = async () => {
+    const generateChart = async () => {
         try {
-            const response = await api.get('/generate-graph/', { params: filters });
-            setGraphData(response.data);
+            const response = await api.post('/api/generate-chart/', { chart_type: chartType, filters });
+            setChart(response.data.chart);
+            setError('');
         } catch (error) {
             console.error('Erreur lors de la génération du graphique', error);
+            setError('Erreur lors de la génération du graphique');
         }
     };
 
     return (
         <div>
-            <h1>Génération de Graphique</h1>
-            <form onSubmit={(e) => { e.preventDefault(); generateGraph(); }}>
-                {/* Champs de sélection pour les filtres */}
+            <h1>Génération de Graphiques</h1>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+            <form onSubmit={(e) => { e.preventDefault(); generateChart(); }}>
+                <select value={chartType} onChange={(e) => setChartType(e.target.value)}>
+                    <option value="pie">Graphique en Secteurs</option>
+                    <option value="bar">Histogramme</option>
+                    <option value="line">Courbe</option>
+                </select>
                 <input
                     type="date"
                     placeholder="Date de début"
-                    value={filters.startDate}
-                    onChange={(e) => setFilters({ ...filters, startDate: e.target.value })}
+                    value={filters.date_debut}
+                    onChange={(e) => setFilters({ ...filters, date_debut: e.target.value })}
                 />
                 <input
                     type="date"
                     placeholder="Date de fin"
-                    value={filters.endDate}
-                    onChange={(e) => setFilters({ ...filters, endDate: e.target.value })}
+                    value={filters.date_fin}
+                    onChange={(e) => setFilters({ ...filters, date_fin: e.target.value })}
                 />
-                <input
-                    type="text"
-                    placeholder="Spécialité"
-                    value={filters.specialty}
-                    onChange={(e) => setFilters({ ...filters, specialty: e.target.value })}
-                />
-                <select
-                    value={filters.graphType}
-                    onChange={(e) => setFilters({ ...filters, graphType: e.target.value })}
-                >
-                    <option value="line">Courbe</option>
-                    <option value="bar">Histogramme</option>
-                    <option value="pie">Secteurs</option>
-                </select>
-                <button type="submit">Générer le graphique</button>
+                <button type="submit">Générer</button>
             </form>
-            {graphData && (
-                <Line data={graphData} />
-            )}
+            {chart && <img src={`data:image/png;base64,${chart}`} alt="Chart" />}
         </div>
     );
 };
 
-export default Graphique;
+export default ChartGenerator;

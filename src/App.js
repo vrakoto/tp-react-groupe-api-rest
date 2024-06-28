@@ -5,6 +5,7 @@ import Projet from './components/Projet';
 import Publication from './components/Publication';
 import Header from './components/Header';
 import Graphique from './components/Graphique';
+import Login from './components/Login';
 
 const App = () => {
     return (
@@ -15,6 +16,7 @@ const App = () => {
                 <Route path="/projets" element={<Projet />} />
                 <Route path="/publications" element={<Publication />} />
                 <Route path="/graphique" element={<Graphique />} />
+                <Route path="/login" element={<Login />} />
             </Routes>
         </>
     );
