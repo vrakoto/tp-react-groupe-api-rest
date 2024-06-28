@@ -15,7 +15,7 @@ const Login = () => {
             const response = await axios.post(`${API_URL}token/`, { username, password });
             localStorage.setItem('access_token', response.data.access);
             localStorage.setItem('refresh_token', response.data.refresh);
-            history.navigate('/');
+            history('/chercheurs');
         } catch (error) {
             console.error('Erreur lors de la connexion:', error);
         }
