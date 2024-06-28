@@ -22,18 +22,18 @@ const Login = () => {
     };
 
     return (
-        <div>
-            <h2>Connexion</h2>
+        <div className="container">
+            <h2 className="mt-5 text-center">Connexion</h2>
             <form onSubmit={handleLogin}>
-                <div>
-                    <label>Nom d'utilisateur:</label>
-                    <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+                <div class="mb-3">
+                    <label htmlFor="identifiant" class="form-label">Identifiant</label>
+                    <input type="text" id="identifiant" className="form-control" value={username} onChange={(e) => setUsername(e.target.value)} />
                 </div>
-                <div>
-                    <label>Mot de passe:</label>
-                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <div class="mb-3">
+                    <label htmlFor="mdp" class="form-label">Mot de passe</label>
+                    <input type="password" id="mdp" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} />
                 </div>
-                <button type="submit">Se connecter</button>
+                <button type="submit" class="btn btn-primary">Se connecter</button>
             </form>
         </div>
     );
