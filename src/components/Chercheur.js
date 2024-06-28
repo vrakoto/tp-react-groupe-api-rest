@@ -13,7 +13,9 @@ const Chercheur = () => {
     const fetchChercheurs = async () => {
         try {
             const response = await api.get('/chercheurs/');
-            setChercheurs(response.data);
+            if (response.data) {
+                setChercheurs(response.data);
+            }
         } catch (error) {
             console.error('Erreur lors de la récupération des chercheurs', error);
         }
@@ -45,7 +47,7 @@ const Chercheur = () => {
         <div>
             <h1>Chercheurs</h1>
             <ul>
-                {chercheurs.map((chercheur) => (
+                {chercheurs.length > 0 && chercheurs.map((chercheur) => (
                     <li key={chercheur.id}>
                         {chercheur.nom} {chercheur.prenom} - {chercheur.specialite}
                         <button onClick={() => deleteChercheur(chercheur.id)}>Supprimer</button>

@@ -66,46 +66,48 @@ const Publication = () => {
 		<div>
 			<h1>Publications</h1>
 			<ul>
-				{publications.map((publication) => (
+				{publications.length > 0 && publications.map((publication) => (
 					<li key={publication.id}>
 						{publication.titre} - {publication.resume}
-                        <button onClick={() => deletePublication(publication.id)}>Supprimer</button>
+						<button onClick={() => deletePublication(publication.id)}>Supprimer</button>
 					</li>
 				))}
 			</ul>
 			<h2>Ajouter une Publication</h2>
 			{error && <p style={{ color: 'red' }}>{error}</p>}
-			<form onSubmit={(e) => { e.preventDefault(); createPublication(); }}>
-				<input
-					type="text"
-					placeholder="Titre"
-					value={newPublication.titre}
-					onChange={(e) => setNewPublication({ ...newPublication, titre: e.target.value })}
-				/>
-				<textarea
-					placeholder="Résumé"
-					value={newPublication.resume}
-					onChange={(e) => setNewPublication({ ...newPublication, resume: e.target.value })}
-				/>
-				<select
-					value={newPublication.projet_associe}
-					onChange={(e) => setNewPublication({ ...newPublication, projet_associe: e.target.value })}
-				>
-					<option value="">Sélectionner un projet associé</option>
-					{projets.map((projet) => (
-						<option key={projet.id} value={projet.id}>
-							{projet.titre}
-						</option>
-					))}
-				</select>
-				<input
-					type="date"
-					placeholder="Date de publication"
-					value={newPublication.date_publication}
-					onChange={(e) => setNewPublication({ ...newPublication, date_publication: e.target.value })}
-				/>
-				<button type="submit">Ajouter</button>
-			</form>
+			{projets && projets.length > 0 ? (
+				<form onSubmit={(e) => { e.preventDefault(); createPublication(); }}>
+					<input
+						type="text"
+						placeholder="Titre"
+						value={newPublication.titre}
+						onChange={(e) => setNewPublication({ ...newPublication, titre: e.target.value })}
+					/>
+					<textarea
+						placeholder="Résumé"
+						value={newPublication.resume}
+						onChange={(e) => setNewPublication({ ...newPublication, resume: e.target.value })}
+					/>
+					<select
+						value={newPublication.projet_associe}
+						onChange={(e) => setNewPublication({ ...newPublication, projet_associe: e.target.value })}
+					>
+						<option value="">Sélectionner un projet associé</option>
+						{projets.map((projet) => (
+							<option key={projet.id} value={projet.id}>
+								{projet.titre}
+							</option>
+						))}
+					</select>
+					<input
+						type="date"
+						placeholder="Date de publication"
+						value={newPublication.date_publication}
+						onChange={(e) => setNewPublication({ ...newPublication, date_publication: e.target.value })}
+					/>
+					<button type="submit">Ajouter</button>
+				</form>
+			) : "Impossible d'ajouter une publication car aucun projet n'a été créé"}
 		</div>
 	);
 };
